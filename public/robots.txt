@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://infobyte-ykjh.onrender.com/sitemap.xml
+Sitemap: https://infobyte-ykjh.onrender.com/sitemap-index.xml
