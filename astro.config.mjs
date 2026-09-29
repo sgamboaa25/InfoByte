@@ -2,7 +2,7 @@ import { defineConfig } from 'astro/config';
 import mdx from '@astrojs/mdx';
 
 export default defineConfig({
-  site: 'https://infobyte.com',
+  site: 'https://infobyte-ykjh.onrender.com',
   output: 'static',
   integrations: [mdx()],
   markdown: {
