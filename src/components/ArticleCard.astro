@@ -11,38 +11,51 @@ export interface Props {
 const { title, description, date, category, slug, image } = Astro.props;
 ---
 
-<article class="card article-card h-full flex flex-col">
+<article class="card article-card">
   {image && (
-    <a href={`/blog/${slug}`} class="card-img-link">
+    <a href={`/blog/${slug}`} class="card-media">
       <img src={image} alt={title} class="card-img" loading="lazy" />
     </a>
   )}
-  <div class="card-content flex flex-col flex-1">
-    <a href={`/categoria/${category.toLowerCase()}`} class="card-category">{category}</a>
+  <div class="card-body">
+    <div class="card-top">
+      <a href={`/categoria/${category.toLowerCase()}`} class="card-category">{category}</a>
+      <time class="card-date" datetime={date}>{date}</time>
+    </div>
+
     <h3 class="card-title">
       <a href={`/blog/${slug}`}>{title}</a>
     </h3>
-    <time class="card-date" datetime={date}>{date}</time>
+
     <p class="card-excerpt">{description}</p>
-    <a href={`/blog/${slug}`} class="btn btn-outline card-cta">Leer más</a>
+
+    <a href={`/blog/${slug}`} class="card-cta">Leer más</a>
   </div>
 </article>
 
 <style>
   .article-card {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 350px;
+    height: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: var(--color-bg);
     border: 1px solid var(--color-border);
     border-radius: var(--border-radius-lg);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
     overflow: hidden;
-    background-color: var(--color-bg);
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
   }
 
   .article-card:hover {
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.1);
     transform: translateY(-2px);
   }
 
-  .card-img-link {
+  .card-media {
     display: block;
     overflow: hidden;
   }
@@ -58,15 +71,25 @@ const { title, description, date, category, slug, image } = Astro.props;
     transform: scale(1.05);
   }
 
-  .card-content {
-    padding: var(--spacing-6);
+  .card-body {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    padding: 24px;
   }
 
-  /* Categoría: pastilla sólida azul oscuro con texto blanco */
+  /* Fila superior: categoría a la izquierda, fecha a la derecha */
+  .card-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+
   .card-category {
     display: inline-block;
-    align-self: flex-start;
-    margin-bottom: var(--spacing-3);
+    min-width: 0;
     padding: 0.3rem 0.8rem;
     background-color: var(--color-primary-hover);
     color: #ffffff;
@@ -77,6 +100,9 @@ const { title, description, date, category, slug, image } = Astro.props;
     text-transform: uppercase;
     text-decoration: none;
     border-radius: 9999px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
     transition: var(--transition-base);
   }
 
@@ -86,12 +112,18 @@ const { title, description, date, category, slug, image } = Astro.props;
     text-decoration: none;
   }
 
-  /* Título: mismo azul y tamaño, mayor peso e interlineado */
+  .card-date {
+    flex-shrink: 0;
+    font-size: var(--font-size-xs);
+    color: var(--color-text-secondary);
+    white-space: nowrap;
+  }
+
   .card-title {
+    margin: 0;
     font-size: var(--font-size-2xl);
     font-weight: 600;
     line-height: 1.4;
-    margin: 0 0 var(--spacing-2);
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
@@ -110,23 +142,13 @@ const { title, description, date, category, slug, image } = Astro.props;
     text-decoration: underline;
   }
 
-  /* Fecha: más pequeña y atenuada */
-  .card-date {
-    display: block;
-    margin-bottom: var(--spacing-3);
-    font-size: var(--font-size-xs);
-    color: var(--color-text-secondary);
-  }
-
-  /* Extracto: máxima legibilidad */
   .card-excerpt {
     flex: 1;
-    margin: 0 0 var(--spacing-5);
+    margin: 12px 0 20px;
     color: #444444;
     font-size: 0.95rem;
     line-height: 1.6;
     text-align: justify;
-    hyphens: auto;
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 4;
@@ -134,8 +156,26 @@ const { title, description, date, category, slug, image } = Astro.props;
     overflow: hidden;
   }
 
+  /* Botón sutil en pastilla de borde fino, anclado al final */
   .card-cta {
     align-self: flex-start;
-    flex-shrink: 0;
+    margin-top: auto;
+    padding: 0.4rem 0.9rem;
+    background-color: transparent;
+    border: 1px solid var(--color-primary);
+    border-radius: 9999px;
+    color: var(--color-primary);
+    font-size: var(--font-size-sm);
+    font-weight: 500;
+    line-height: 1.2;
+    text-decoration: none;
+    transition: var(--transition-base);
+  }
+
+  .card-cta:hover {
+    background-color: var(--color-primary);
+    border-color: var(--color-primary);
+    color: #ffffff;
+    text-decoration: none;
   }
 </style>

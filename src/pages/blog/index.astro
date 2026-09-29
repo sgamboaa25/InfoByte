@@ -31,7 +31,7 @@ const categories = [
         ))}
       </div>
 
-      <div class="articles-grid">
+      <div class="article-grid">
         {sortedPosts.map((post, index) => (
           <>
             <ArticleCard 
@@ -100,21 +100,6 @@ const categories = [
     background-color: var(--primary);
     color: white;
     border-color: var(--primary);
-  }
-  .articles-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 2rem;
-  }
-  @media (min-width: 768px) {
-    .articles-grid {
-      grid-template-columns: repeat(2, 1fr);
-    }
-  }
-  @media (min-width: 1200px) {
-    .articles-grid {
-      grid-template-columns: repeat(3, 1fr);
-    }
   }
   .ad-wrapper {
     grid-column: 1 / -1;
