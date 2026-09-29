@@ -1,0 +1,114 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ArticleCard from '../../components/ArticleCard.astro';
+import Sidebar from '../../components/Sidebar.astro';
+import AdSlot from '../../components/AdSlot.astro';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const categories = [
+    { id: 'tecnologia', name: 'Tecnología' },
+    { id: 'productividad', name: 'Productividad' },
+    { id: 'seguridad', name: 'Seguridad' },
+    { id: 'inteligencia-artificial', name: 'Inteligencia Artificial' }
+  ];
+  
+  return categories.map(cat => ({
+    params: { categoria: cat.id },
+    props: { categoryName: cat.name },
+  }));
+}
+
+const { categoria } = Astro.params;
+const { categoryName } = Astro.props;
+
+const allPosts = await getCollection('blog');
+const filteredPosts = allPosts
+  .filter(post => post.data.category === categoria)
+  .sort((a, b) => b.data.date.localeCompare(a.data.date));
+---
+
+<BaseLayout 
+  title={`${categoryName} - InfoByte`}
+  description={`Artículos sobre ${categoryName} en InfoByte.`}
+>
+  <div class="container layout-container">
+    <main class="main-content">
+      <h1>Categoría: <span>{categoryName}</span></h1>
+      
+      <div class="articles-grid">
+        {filteredPosts.length > 0 ? (
+          filteredPosts.map((post, index) => (
+            <>
+              <ArticleCard 
+                title={post.data.title}
+                description={post.data.description}
+                date={post.data.date}
+                category={post.data.category}
+                slug={post.slug}
+                image={post.data.image}
+              />
+              {(index + 1) % 4 === 0 && (
+                <div class="ad-wrapper">
+                  <AdSlot slot={`category_inline_${index}`} format="horizontal" />
+                </div>
+              )}
+            </>
+          ))
+        ) : (
+          <p class="no-posts">No hay artículos publicados en esta categoría todavía.</p>
+        )}
+      </div>
+    </main>
+    <Sidebar />
+  </div>
+</BaseLayout>
+
+<style>
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+  }
+  .layout-container {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  @media (min-width: 992px) {
+    .layout-container {
+      grid-template-columns: 3fr 1fr;
+    }
+  }
+  h1 {
+    color: var(--text);
+    margin-bottom: 2rem;
+    font-size: 2.5rem;
+  }
+  h1 span {
+    color: var(--primary);
+  }
+  .articles-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  @media (min-width: 768px) {
+    .articles-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  .ad-wrapper {
+    grid-column: 1 / -1;
+    margin: 1rem 0;
+    text-align: center;
+  }
+  .no-posts {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 3rem;
+    background: var(--bg-secondary);
+    border-radius: 0.5rem;
+    color: var(--text-secondary);
+  }
+</style>

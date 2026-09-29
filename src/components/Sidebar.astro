@@ -1,0 +1,74 @@
+---
+import AdSlot from './AdSlot.astro';
+---
+
+<aside class="sidebar">
+  <!-- Top Ad -->
+  <AdSlot slot="1111111111" format="rectangle" className="mb-8" />
+
+  <!-- Categories Widget -->
+  <div class="widget mb-8">
+    <h3 class="widget-title">Categorías</h3>
+    <ul class="widget-list">
+      <li><a href="/categoria/tecnologia">Tecnología</a></li>
+      <li><a href="/categoria/productividad">Productividad</a></li>
+      <li><a href="/categoria/seguridad">Seguridad</a></li>
+      <li><a href="/categoria/inteligencia-artificial">Inteligencia Artificial</a></li>
+    </ul>
+  </div>
+
+  <!-- Popular Tools Widget -->
+  <div class="widget mb-8">
+    <h3 class="widget-title">Herramientas Populares</h3>
+    <ul class="widget-list">
+      <li><a href="/herramientas/generador-contraseñas">Generador de Contraseñas</a></li>
+      <li><a href="/herramientas/calculadora-roi">Calculadora ROI IT</a></li>
+      <li><a href="/herramientas/conversor-base64">Conversor Base64</a></li>
+    </ul>
+  </div>
+
+  <!-- Bottom Ad -->
+  <AdSlot slot="2222222222" format="rectangle" />
+</aside>
+
+<style>
+  .sidebar {
+    position: sticky;
+    top: 90px;
+  }
+
+  .widget {
+    background-color: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius);
+    padding: var(--spacing-6);
+  }
+
+  .widget-title {
+    font-size: var(--font-size-lg);
+    margin-bottom: var(--spacing-4);
+    padding-bottom: var(--spacing-2);
+    border-bottom: 2px solid var(--color-bg-secondary);
+  }
+
+  .widget-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .widget-list li {
+    margin-bottom: var(--spacing-2);
+  }
+
+  .widget-list a {
+    color: var(--color-text-secondary);
+    display: block;
+    padding: var(--spacing-1) 0;
+  }
+
+  .widget-list a:hover {
+    color: var(--color-primary);
+    padding-left: var(--spacing-1);
+  }
+</style>

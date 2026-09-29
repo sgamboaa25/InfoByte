@@ -1,0 +1,121 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import AdSlot from '../../components/AdSlot.astro';
+---
+
+<BaseLayout 
+  title="Herramientas Online Gratuitas - InfoByte"
+  description="Colección de herramientas online gratuitas útiles para el día a día. Calculadora de IMC, Generador de Contraseñas y más."
+>
+  <section class="hero-tools">
+    <div class="container">
+      <h1>Herramientas Online Gratuitas</h1>
+      <p>Nuestra colección de utilidades web diseñadas para facilitarte tareas cotidianas directamente desde tu navegador.</p>
+    </div>
+  </section>
+
+  <div class="container ad-container">
+    <AdSlot slot="tools_top" format="horizontal" />
+  </div>
+
+  <main class="container content">
+    <div class="tools-grid">
+      <a href="/herramientas/calculadora-imc" class="tool-card">
+        <div class="icon">⚖️</div>
+        <h2>Calculadora de IMC</h2>
+        <p>Calcula tu Índice de Masa Corporal de forma rápida y sencilla para conocer tu estado de salud ideal basado en tu peso y altura.</p>
+        <span class="btn-link">Usar herramienta &rarr;</span>
+      </a>
+
+      <a href="/herramientas/generador-contrasenas" class="tool-card">
+        <div class="icon">🔒</div>
+        <h2>Generador de Contraseñas</h2>
+        <p>Crea contraseñas robustas y seguras, personalizables con diferentes longitudes y caracteres para proteger tus cuentas.</p>
+        <span class="btn-link">Usar herramienta &rarr;</span>
+      </a>
+    </div>
+  </main>
+  
+  <div class="container ad-container">
+    <AdSlot slot="tools_bottom" format="horizontal" />
+  </div>
+</BaseLayout>
+
+<style>
+  .hero-tools {
+    background-color: var(--bg-secondary);
+    padding: 4rem 1rem;
+    text-align: center;
+    border-bottom: 1px solid var(--border);
+  }
+  .hero-tools h1 {
+    font-size: 2.5rem;
+    color: var(--text);
+    margin-bottom: 1rem;
+  }
+  .hero-tools p {
+    font-size: 1.2rem;
+    color: var(--text-secondary);
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+  }
+  .content {
+    padding: 4rem 1rem;
+  }
+  .ad-container {
+    margin: 2rem auto;
+    text-align: center;
+  }
+  .tools-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  @media (min-width: 768px) {
+    .tools-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  .tool-card {
+    background: white;
+    padding: 2.5rem;
+    border-radius: 0.75rem;
+    border: 1px solid var(--border);
+    text-align: center;
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+  }
+  .tool-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+    border-color: var(--primary);
+  }
+  .icon {
+    font-size: 4rem;
+    margin-bottom: 1.5rem;
+  }
+  .tool-card h2 {
+    margin-bottom: 1rem;
+    color: var(--text);
+    font-size: 1.5rem;
+  }
+  .tool-card p {
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+    flex-grow: 1;
+  }
+  .btn-link {
+    color: var(--primary);
+    font-weight: bold;
+    margin-top: auto;
+  }
+</style>

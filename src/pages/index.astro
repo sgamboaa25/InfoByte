@@ -1,0 +1,211 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ArticleCard from '../components/ArticleCard.astro';
+import AdSlot from '../components/AdSlot.astro';
+import { getCollection } from 'astro:content';
+
+const posts = await getCollection('blog');
+const sortedPosts = posts.sort((a, b) => b.data.date.localeCompare(a.data.date));
+const latestPosts = sortedPosts.slice(0, 6);
+---
+
+<BaseLayout 
+  title="InfoByte - Tu fuente de información tecnológica"
+  description="InfoByte te ofrece los mejores artículos sobre tecnología, productividad, seguridad e inteligencia artificial, además de herramientas online gratuitas."
+>
+  <section class="hero">
+    <div class="container">
+      <h1>Bienvenido a <span>InfoByte</span></h1>
+      <p>Tu fuente diaria de información tecnológica, herramientas útiles y las últimas tendencias en IA y desarrollo.</p>
+      <div class="cta-buttons">
+        <a href="/blog" class="btn primary">Explorar Blog</a>
+        <a href="/herramientas" class="btn secondary">Ver Herramientas</a>
+      </div>
+    </div>
+  </section>
+
+  <div class="container ad-container">
+    <AdSlot slot="index_top" format="horizontal" />
+  </div>
+
+  <section class="latest-articles">
+    <div class="container">
+      <h2>Últimos Artículos</h2>
+      <div class="grid">
+        {latestPosts.map((post) => (
+          <ArticleCard 
+            title={post.data.title}
+            description={post.data.description}
+            date={post.data.date}
+            category={post.data.category}
+            slug={post.slug}
+            image={post.data.image}
+          />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="featured-tools bg-secondary">
+    <div class="container">
+      <h2>Herramientas Destacadas</h2>
+      <div class="tools-grid">
+        <a href="/herramientas/calculadora-imc" class="tool-card">
+          <div class="icon">⚖️</div>
+          <h3>Calculadora IMC</h3>
+          <p>Calcula tu Índice de Masa Corporal de forma rápida y sencilla para conocer tu estado de salud ideal.</p>
+        </a>
+        <a href="/herramientas/generador-contrasenas" class="tool-card">
+          <div class="icon">🔒</div>
+          <h3>Generador de Contraseñas</h3>
+          <p>Crea contraseñas robustas y seguras personalizables para proteger tus cuentas online.</p>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <div class="container ad-container">
+    <AdSlot slot="index_bottom" format="horizontal" />
+  </div>
+
+  <section class="why-infobyte">
+    <div class="container">
+      <h2>¿Por qué InfoByte?</h2>
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="icon">📚</div>
+          <h3>Contenido de Calidad</h3>
+          <p>Artículos investigados a fondo por expertos para brindarte la información más veraz y útil.</p>
+        </div>
+        <div class="feature-card">
+          <div class="icon">🛠️</div>
+          <h3>Herramientas Útiles</h3>
+          <p>Utilidades web gratuitas diseñadas para facilitarte tareas cotidianas con máxima eficiencia.</p>
+        </div>
+        <div class="feature-card">
+          <div class="icon">⚡</div>
+          <h3>Actualizado Diariamente</h3>
+          <p>Mantente al día con las últimas novedades del mundo tecnológico con nuestras actualizaciones constantes.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .hero {
+    background: linear-gradient(135deg, var(--bg-secondary) 0%, #e2e8f0 100%);
+    padding: 4rem 1rem;
+    text-align: center;
+    border-bottom: 1px solid var(--border);
+  }
+  .hero h1 {
+    font-size: 3rem;
+    color: var(--text);
+    margin-bottom: 1rem;
+  }
+  .hero h1 span {
+    color: var(--primary);
+  }
+  .hero p {
+    font-size: 1.25rem;
+    color: var(--text-secondary);
+    max-width: 600px;
+    margin: 0 auto 2rem;
+  }
+  .cta-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+  }
+  .btn {
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    font-weight: bold;
+    text-decoration: none;
+    transition: background-color 0.2s, transform 0.1s;
+  }
+  .btn.primary {
+    background-color: var(--primary);
+    color: white;
+  }
+  .btn.primary:hover {
+    background-color: var(--primary-hover);
+    transform: translateY(-2px);
+  }
+  .btn.secondary {
+    background-color: white;
+    color: var(--primary);
+    border: 2px solid var(--primary);
+  }
+  .btn.secondary:hover {
+    background-color: var(--bg-secondary);
+    transform: translateY(-2px);
+  }
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+  }
+  .ad-container {
+    margin: 2rem auto;
+  }
+  section {
+    padding: 4rem 0;
+  }
+  h2 {
+    text-align: center;
+    margin-bottom: 2rem;
+    color: var(--text);
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 2rem;
+  }
+  @media (min-width: 768px) {
+    .grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (min-width: 1024px) {
+    .grid { grid-template-columns: repeat(3, 1fr); }
+  }
+  .bg-secondary {
+    background-color: var(--bg-secondary);
+  }
+  .tools-grid, .features-grid {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 2rem;
+  }
+  @media (min-width: 768px) {
+    .tools-grid { grid-template-columns: repeat(2, 1fr); }
+    .features-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+  .tool-card, .feature-card {
+    background: white;
+    padding: 2rem;
+    border-radius: 0.5rem;
+    border: 1px solid var(--border);
+    text-align: center;
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .tool-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    border-color: var(--primary);
+  }
+  .icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+  }
+  .tool-card h3, .feature-card h3 {
+    margin-bottom: 0.5rem;
+    color: var(--text);
+  }
+  .tool-card p, .feature-card p {
+    color: var(--text-secondary);
+    line-height: 1.5;
+  }
+</style>

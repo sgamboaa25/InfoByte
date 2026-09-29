@@ -1,0 +1,60 @@
+---
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+      <!-- About -->
+      <div>
+        <h3>InfoByte</h3>
+        <p class="text-sm" style="color: var(--color-footer-text);">
+          Tu fuente de información tecnológica. Publicamos artículos, guías y tutoriales sobre tecnología, programación, seguridad y productividad.
+        </p>
+        <!-- Social Icons Placeholder -->
+        <div class="flex gap-4 mt-4">
+          <a href="#" aria-label="Twitter">Twitter</a>
+          <a href="#" aria-label="YouTube">YouTube</a>
+          <a href="#" aria-label="GitHub">GitHub</a>
+        </div>
+      </div>
+
+      <!-- Quick Links -->
+      <div>
+        <h3>Enlaces Rápidos</h3>
+        <ul style="list-style: none; padding: 0;">
+          <li class="mb-2"><a href="/">Inicio</a></li>
+          <li class="mb-2"><a href="/blog">Blog</a></li>
+          <li class="mb-2"><a href="/herramientas">Herramientas</a></li>
+          <li class="mb-2"><a href="/about">Sobre Nosotros</a></li>
+          <li class="mb-2"><a href="/contacto">Contacto</a></li>
+        </ul>
+      </div>
+
+      <!-- Categories -->
+      <div>
+        <h3>Categorías</h3>
+        <ul style="list-style: none; padding: 0;">
+          <li class="mb-2"><a href="/categoria/tecnologia">Tecnología</a></li>
+          <li class="mb-2"><a href="/categoria/productividad">Productividad</a></li>
+          <li class="mb-2"><a href="/categoria/seguridad">Seguridad</a></li>
+          <li class="mb-2"><a href="/categoria/inteligencia-artificial">Inteligencia Artificial</a></li>
+        </ul>
+      </div>
+
+      <!-- Legal -->
+      <div>
+        <h3>Legal</h3>
+        <ul style="list-style: none; padding: 0;">
+          <li class="mb-2"><a href="/privacidad">Política de Privacidad</a></li>
+          <li class="mb-2"><a href="/terminos">Términos de Servicio</a></li>
+          <li class="mb-2"><a href="/cookies">Política de Cookies</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="mt-12 pt-8 text-center" style="border-top: 1px solid rgba(255,255,255,0.1);">
+      <p class="text-sm">&copy; {year} InfoByte. Todos los derechos reservados.</p>
+    </div>
+  </div>
+</footer>

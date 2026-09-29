@@ -1,0 +1,43 @@
+---
+---
+
+<div id="cookie-banner" class="cookie-banner" role="dialog" aria-labelledby="cookie-msg">
+  <div class="container cookie-content">
+    <div class="cookie-text" id="cookie-msg">
+      Utilizamos cookies propias y de terceros para mejorar nuestros servicios y mostrarle publicidad relacionada con sus preferencias mediante el análisis de sus hábitos de navegación.
+    </div>
+    <div class="cookie-buttons">
+      <button id="btn-reject" class="btn btn-outline">Rechazar</button>
+      <button id="btn-accept" class="btn btn-primary">Aceptar todas</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const banner = document.getElementById('cookie-banner');
+    const btnAccept = document.getElementById('btn-accept');
+    const btnReject = document.getElementById('btn-reject');
+    
+    // Check if preference already saved
+    if (!localStorage.getItem('cookie_consent')) {
+      // Show banner with small delay for smooth animation
+      setTimeout(() => {
+        banner?.classList.add('show');
+      }, 500);
+    }
+
+    const setConsent = (value: string) => {
+      localStorage.setItem('cookie_consent', value);
+      banner?.classList.remove('show');
+      
+      // If accepted, could initialize analytics here
+      if(value === 'accepted') {
+        console.log("Cookies accepted");
+      }
+    };
+
+    btnAccept?.addEventListener('click', () => setConsent('accepted'));
+    btnReject?.addEventListener('click', () => setConsent('rejected'));
+  });
+</script>

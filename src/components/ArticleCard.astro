@@ -1,0 +1,50 @@
+---
+export interface Props {
+  title: string;
+  description: string;
+  date: string;
+  category: string;
+  slug: string;
+  image?: string;
+}
+
+const { title, description, date, category, slug, image } = Astro.props;
+---
+
+<article class="card article-card h-full flex flex-col">
+  {image && (
+    <a href={`/blog/${slug}`} class="card-img-link">
+      <img src={image} alt={title} class="card-img" loading="lazy" />
+    </a>
+  )}
+  <div class="card-content flex flex-col flex-1">
+    <div class="mb-2 flex items-center justify-between">
+      <a href={`/categoria/${category.toLowerCase()}`} class="badge">{category}</a>
+      <span class="text-sm text-secondary">{date}</span>
+    </div>
+    <h3 class="mb-2">
+      <a href={`/blog/${slug}`}>{title}</a>
+    </h3>
+    <p class="flex-1 mb-4">{description}</p>
+    <a href={`/blog/${slug}`} class="btn btn-outline" style="align-self: flex-start;">Leer más</a>
+  </div>
+</article>
+
+<style>
+  .card-img-link {
+    display: block;
+    overflow: hidden;
+  }
+  .card-img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+  }
+  .article-card:hover .card-img {
+    transform: scale(1.05);
+  }
+  .text-secondary {
+    color: var(--color-text-secondary);
+  }
+</style>

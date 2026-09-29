@@ -1,0 +1,119 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ArticleCard from '../../components/ArticleCard.astro';
+import Sidebar from '../../components/Sidebar.astro';
+import AdSlot from '../../components/AdSlot.astro';
+import { getCollection } from 'astro:content';
+
+const posts = await getCollection('blog');
+const sortedPosts = posts.sort((a, b) => b.data.date.localeCompare(a.data.date));
+
+const categories = [
+  { id: 'tecnologia', name: 'Tecnología' },
+  { id: 'productividad', name: 'Productividad' },
+  { id: 'seguridad', name: 'Seguridad' },
+  { id: 'inteligencia-artificial', name: 'Inteligencia Artificial' }
+];
+---
+
+<BaseLayout 
+  title="Blog - InfoByte"
+  description="Explora nuestros artículos sobre tecnología, productividad, seguridad e inteligencia artificial."
+>
+  <div class="container layout-container">
+    <main class="main-content">
+      <h1>Blog de InfoByte</h1>
+      
+      <div class="category-tabs">
+        <a href="/blog" class="tab active">Todos</a>
+        {categories.map(cat => (
+          <a href={`/categoria/${cat.id}`} class="tab">{cat.name}</a>
+        ))}
+      </div>
+
+      <div class="articles-grid">
+        {sortedPosts.map((post, index) => (
+          <>
+            <ArticleCard 
+              title={post.data.title}
+              description={post.data.description}
+              date={post.data.date}
+              category={post.data.category}
+              slug={post.slug}
+              image={post.data.image}
+            />
+            {(index + 1) % 3 === 0 && (
+              <div class="ad-wrapper">
+                <AdSlot slot={`blog_inline_${index}`} format="horizontal" />
+              </div>
+            )}
+          </>
+        ))}
+      </div>
+    </main>
+    <Sidebar />
+  </div>
+</BaseLayout>
+
+<style>
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+  }
+  .layout-container {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  @media (min-width: 992px) {
+    .layout-container {
+      grid-template-columns: 3fr 1fr;
+    }
+  }
+  h1 {
+    color: var(--text);
+    margin-bottom: 2rem;
+    font-size: 2.5rem;
+  }
+  .category-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+  }
+  .tab {
+    padding: 0.5rem 1rem;
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: 2rem;
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.2s;
+  }
+  .tab:hover {
+    background-color: #e2e8f0;
+    color: var(--text);
+  }
+  .tab.active {
+    background-color: var(--primary);
+    color: white;
+    border-color: var(--primary);
+  }
+  .articles-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  @media (min-width: 768px) {
+    .articles-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  .ad-wrapper {
+    grid-column: 1 / -1;
+    margin: 1rem 0;
+    text-align: center;
+  }
+</style>

@@ -1,0 +1,110 @@
+---
+const pathname = Astro.url.pathname;
+const links = [
+  { name: 'Inicio', url: '/' },
+  { name: 'Blog', url: '/blog' },
+  { name: 'Herramientas', url: '/herramientas' },
+  { name: 'Sobre Nosotros', url: '/about' },
+  { name: 'Contacto', url: '/contacto' },
+];
+---
+
+<header class="site-header" id="header">
+  <div class="container flex items-center justify-between" style="height: 70px;">
+    <!-- Logo -->
+    <a href="/" class="logo flex items-center gap-2" aria-label="InfoByte Inicio">
+      <svg width="32" height="32" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="50" cy="50" r="50" fill="#2563eb" />
+        <path d="M40 30 L60 30 L60 45 L70 45 L70 55 L60 55 L60 70 L40 70 Z" fill="white" opacity="0.8"/>
+        <text x="50" y="55" font-family="Inter, sans-serif" font-size="28" font-weight="bold" fill="#ffffff" text-anchor="middle">IB</text>
+      </svg>
+      <span class="logo-text">InfoByte</span>
+    </a>
+
+    <!-- Desktop Nav -->
+    <nav class="desktop-nav hidden md:flex gap-6">
+      {links.map((link) => (
+        <a 
+          href={link.url} 
+          class={`nav-link ${pathname === link.url || (link.url !== '/' && pathname.startsWith(link.url)) ? 'active' : ''}`}
+        >
+          {link.name}
+        </a>
+      ))}
+    </nav>
+
+    <!-- Mobile Menu Toggle -->
+    <button class="mobile-toggle md:hidden" id="mobile-menu-btn" aria-label="Abrir menú">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="3" y1="12" x2="21" y2="12"></line>
+        <line x1="3" y1="6" x2="21" y2="6"></line>
+        <line x1="3" y1="18" x2="21" y2="18"></line>
+      </svg>
+    </button>
+  </div>
+
+  <!-- Mobile Nav -->
+  <div class="mobile-nav" id="mobile-nav">
+    <nav class="flex flex-col gap-4 p-4">
+      {links.map((link) => (
+        <a 
+          href={link.url} 
+          class={`nav-link ${pathname === link.url || (link.url !== '/' && pathname.startsWith(link.url)) ? 'active' : ''}`}
+        >
+          {link.name}
+        </a>
+      ))}
+    </nav>
+  </div>
+</header>
+
+<style>
+  .logo-text {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--color-text);
+  }
+  
+  .mobile-toggle {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: var(--color-text);
+    padding: var(--spacing-2);
+  }
+
+  .mobile-nav {
+    display: none;
+    background-color: var(--color-bg);
+    border-top: 1px solid var(--color-border);
+    position: absolute;
+    top: 70px;
+    left: 0;
+    right: 0;
+    box-shadow: var(--shadow-sm);
+  }
+
+  .mobile-nav.open {
+    display: block;
+  }
+</style>
+
+<script>
+  // Add scroll shadow
+  const header = document.getElementById('header');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 10) {
+      header?.classList.add('scrolled');
+    } else {
+      header?.classList.remove('scrolled');
+    }
+  });
+
+  // Mobile menu toggle
+  const mobileBtn = document.getElementById('mobile-menu-btn');
+  const mobileNav = document.getElementById('mobile-nav');
+
+  mobileBtn?.addEventListener('click', () => {
+    mobileNav?.classList.toggle('open');
+  });
+</script>

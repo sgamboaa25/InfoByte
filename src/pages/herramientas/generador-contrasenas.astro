@@ -1,0 +1,337 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Sidebar from '../../components/Sidebar.astro';
+import AdSlot from '../../components/AdSlot.astro';
+---
+
+<BaseLayout 
+  title="Generador de Contraseñas Seguras - InfoByte"
+  description="Genera contraseñas fuertes y seguras gratis. Protege tus cuentas con nuestro creador de contraseñas aleatorias personalizable."
+>
+  <div class="container layout-container">
+    <main class="main-content">
+      <div class="tool-header">
+        <h1>Generador de Contraseñas</h1>
+        <p>Crea contraseñas robustas y aleatorias al instante para mantener tus cuentas a salvo de ciberataques.</p>
+      </div>
+
+      <div class="tool-box">
+        <div class="password-display">
+          <input type="text" id="password-output" readonly placeholder="Genera una contraseña..." />
+          <button id="copy-btn" class="btn secondary" title="Copiar al portapapeles">📋 Copiar</button>
+        </div>
+        
+        <div class="strength-meter">
+          <div class="strength-bar" id="strength-bar"></div>
+        </div>
+        <p class="strength-text" id="strength-text">Nivel de seguridad: --</p>
+
+        <div class="controls">
+          <div class="length-control">
+            <label for="length">Longitud: <span id="length-val">16</span></label>
+            <input type="range" id="length" min="8" max="64" value="16" />
+          </div>
+
+          <div class="checkbox-group">
+            <label class="checkbox-label">
+              <input type="checkbox" id="uppercase" checked />
+              Mayúsculas (A-Z)
+            </label>
+            <label class="checkbox-label">
+              <input type="checkbox" id="lowercase" checked />
+              Minúsculas (a-z)
+            </label>
+            <label class="checkbox-label">
+              <input type="checkbox" id="numbers" checked />
+              Números (0-9)
+            </label>
+            <label class="checkbox-label">
+              <input type="checkbox" id="symbols" checked />
+              Símbolos (!@#$...)
+            </label>
+          </div>
+
+          <button id="generate-btn" class="btn primary full-width">Generar Contraseña</button>
+        </div>
+      </div>
+
+      <AdSlot slot="tool_pwd_middle" format="horizontal" className="my-8" />
+
+      <article class="seo-content">
+        <h2>Por qué usar contraseñas seguras</h2>
+        <p>En la era digital actual, nuestras vidas están entrelazadas con el internet. Desde la banca online hasta las redes sociales y el correo electrónico, una enorme cantidad de nuestra información personal y financiera reside en servidores remotos protegidos por una única barrera: nuestras contraseñas. Utilizar contraseñas débiles o reutilizarlas en múltiples sitios es el equivalente a dejar la puerta de tu casa abierta.</p>
+        
+        <p>Los ciberdelincuentes utilizan técnicas sofisticadas, como ataques de fuerza bruta y diccionarios, para descifrar contraseñas simples en cuestión de segundos. Una contraseña fuerte y generada aleatoriamente reduce exponencialmente el riesgo de que tus cuentas sean comprometidas. Este generador está diseñado para crear cadenas de caracteres impredecibles que desafían los métodos de hackeo más comunes, ofreciéndote la tranquilidad que necesitas en línea.</p>
+
+        <h3>Características de una contraseña invulnerable</h3>
+        <p>Una contraseña verdaderamente segura debe cumplir con ciertos criterios básicos para ser considerada robusta:</p>
+        <ul>
+          <li><strong>Longitud:</strong> Debe tener al menos 12 caracteres, siendo 16 o más lo ideal. A mayor longitud, mayor dificultad de descifrado.</li>
+          <li><strong>Complejidad:</strong> Debe incluir una mezcla aleatoria de letras mayúsculas, minúsculas, números y caracteres especiales o símbolos.</li>
+          <li><strong>Imprevisibilidad:</strong> No debe contener palabras del diccionario, nombres propios, fechas de nacimiento, o patrones de teclado evidentes (como 'qwerty' o '123456').</li>
+          <li><strong>Unicidad:</strong> Cada cuenta debe tener una contraseña diferente. Si se compromete un servicio, el resto de tus cuentas seguirán protegidas.</li>
+        </ul>
+
+        <h3>Consejos de seguridad adicionales</h3>
+        <p>Además de generar contraseñas fuertes, te recomendamos seguir estas buenas prácticas de ciberseguridad:</p>
+        <p><strong>Usa un gestor de contraseñas:</strong> Recordar decenas de contraseñas complejas es humanamente imposible. Un gestor de contraseñas seguro y encriptado guardará todas tus credenciales y requerirá que recuerdes solo una "contraseña maestra" fuerte.</p>
+        <p><strong>Activa la Autenticación de Dos Factores (2FA):</strong> Siempre que sea posible, activa el 2FA o MFA. Esto añade una capa extra de seguridad, requiriendo un código de tu teléfono además de la contraseña, dificultando enormemente el acceso no autorizado incluso si tu contraseña ha sido descubierta.</p>
+        <p><strong>Cuidado con el Phishing:</strong> Nunca introduzcas tus contraseñas en enlaces recibidos por correos electrónicos sospechosos o mensajes no solicitados. Verifica siempre que la URL sea legítima antes de iniciar sesión.</p>
+        <p>Mantener una buena higiene digital es un proceso continuo. Comienza asegurando tus cuentas más críticas (como el correo electrónico principal y servicios bancarios) con contraseñas generadas por nuestra herramienta hoy mismo.</p>
+      </article>
+    </main>
+    <Sidebar />
+  </div>
+</BaseLayout>
+
+<script>
+  const generateBtn = document.getElementById('generate-btn');
+  const copyBtn = document.getElementById('copy-btn');
+  const passwordOutput = document.getElementById('password-output') as HTMLInputElement;
+  const lengthSlider = document.getElementById('length') as HTMLInputElement;
+  const lengthVal = document.getElementById('length-val');
+  const strengthBar = document.getElementById('strength-bar');
+  const strengthText = document.getElementById('strength-text');
+  
+  const chkUpper = document.getElementById('uppercase') as HTMLInputElement;
+  const chkLower = document.getElementById('lowercase') as HTMLInputElement;
+  const chkNum = document.getElementById('numbers') as HTMLInputElement;
+  const chkSym = document.getElementById('symbols') as HTMLInputElement;
+
+  const charSets = {
+    upper: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
+    lower: 'abcdefghijklmnopqrstuvwxyz',
+    num: '0123456789',
+    sym: '!@#$%^&*()_+~`|}{[]:;?><,./-='
+  };
+
+  lengthSlider?.addEventListener('input', (e) => {
+    if(lengthVal) lengthVal.textContent = (e.target as HTMLInputElement).value;
+  });
+
+  function generatePassword() {
+    let charset = '';
+    if (chkUpper.checked) charset += charSets.upper;
+    if (chkLower.checked) charset += charSets.lower;
+    if (chkNum.checked) charset += charSets.num;
+    if (chkSym.checked) charset += charSets.sym;
+
+    if (charset === '') {
+      alert('Debes seleccionar al menos un tipo de caracter.');
+      chkLower.checked = true;
+      charset += charSets.lower;
+    }
+
+    const length = parseInt(lengthSlider.value);
+    let password = '';
+    
+    // Crypto API for better randomness
+    const array = new Uint32Array(length);
+    window.crypto.getRandomValues(array);
+    
+    for (let i = 0; i < length; i++) {
+      password += charset[array[i] % charset.length];
+    }
+    
+    passwordOutput.value = password;
+    updateStrength(password);
+  }
+
+  function updateStrength(pwd: string) {
+    let strength = 0;
+    if (pwd.length > 8) strength += 1;
+    if (pwd.length >= 12) strength += 1;
+    if (pwd.length >= 16) strength += 1;
+    if (/[A-Z]/.test(pwd)) strength += 1;
+    if (/[a-z]/.test(pwd)) strength += 1;
+    if (/[0-9]/.test(pwd)) strength += 1;
+    if (/[^A-Za-z0-9]/.test(pwd)) strength += 1;
+
+    let color = '';
+    let text = '';
+    let width = '0%';
+
+    if (strength < 3) {
+      color = '#ef4444'; text = 'Nivel de seguridad: Débil'; width = '25%';
+    } else if (strength < 5) {
+      color = '#f59e0b'; text = 'Nivel de seguridad: Medio'; width = '50%';
+    } else if (strength < 7) {
+      color = '#3b82f6'; text = 'Nivel de seguridad: Fuerte'; width = '75%';
+    } else {
+      color = '#22c55e'; text = 'Nivel de seguridad: Muy Fuerte'; width = '100%';
+    }
+
+    if(strengthBar) {
+      strengthBar.style.width = width;
+      strengthBar.style.backgroundColor = color;
+    }
+    if(strengthText) {
+      strengthText.textContent = text;
+      strengthText.style.color = color;
+    }
+  }
+
+  generateBtn?.addEventListener('click', generatePassword);
+  
+  copyBtn?.addEventListener('click', () => {
+    if (!passwordOutput.value) return;
+    navigator.clipboard.writeText(passwordOutput.value).then(() => {
+      const originalText = copyBtn.textContent;
+      copyBtn.textContent = '✅ Copiado!';
+      setTimeout(() => copyBtn.textContent = originalText, 2000);
+    });
+  });
+
+  // Generate initial password on load
+  generatePassword();
+</script>
+
+<style>
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+  }
+  .layout-container {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  @media (min-width: 992px) {
+    .layout-container {
+      grid-template-columns: 3fr 1fr;
+    }
+  }
+  .tool-header {
+    margin-bottom: 2rem;
+  }
+  .tool-header h1 {
+    color: var(--text);
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+  }
+  .tool-header p {
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+  }
+  .tool-box {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 0.75rem;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+  }
+  .password-display {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+  }
+  #password-output {
+    flex-grow: 1;
+    padding: 1rem;
+    font-size: 1.25rem;
+    font-family: monospace;
+    border: 2px solid var(--border);
+    border-radius: 0.5rem;
+    background: var(--bg-secondary);
+    color: var(--text);
+  }
+  .btn {
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    font-weight: bold;
+    cursor: pointer;
+    border: none;
+    font-size: 1rem;
+    transition: background-color 0.2s;
+  }
+  .btn.primary {
+    background-color: var(--primary);
+    color: white;
+  }
+  .btn.primary:hover {
+    background-color: var(--primary-hover);
+  }
+  .btn.secondary {
+    background-color: var(--bg-secondary);
+    color: var(--text);
+    border: 1px solid var(--border);
+  }
+  .btn.secondary:hover {
+    background-color: #e2e8f0;
+  }
+  .full-width {
+    width: 100%;
+    margin-top: 1.5rem;
+    padding: 1rem;
+    font-size: 1.1rem;
+  }
+  .strength-meter {
+    height: 6px;
+    background: var(--bg-secondary);
+    border-radius: 3px;
+    overflow: hidden;
+    margin-bottom: 0.5rem;
+  }
+  .strength-bar {
+    height: 100%;
+    width: 0%;
+    transition: width 0.3s, background-color 0.3s;
+  }
+  .strength-text {
+    font-size: 0.875rem;
+    font-weight: bold;
+    margin-bottom: 2rem;
+    text-align: right;
+  }
+  .controls {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  .length-control {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .length-control label {
+    font-weight: 500;
+  }
+  input[type="range"] {
+    width: 100%;
+  }
+  .checkbox-group {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+  .checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+  }
+  .seo-content {
+    color: var(--text);
+    line-height: 1.7;
+  }
+  .seo-content h2, .seo-content h3 {
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    color: var(--text);
+  }
+  .seo-content p, .seo-content ul {
+    margin-bottom: 1rem;
+    color: var(--text-secondary);
+  }
+  .seo-content ul {
+    padding-left: 1.5rem;
+  }
+  .seo-content li {
+    margin-bottom: 0.5rem;
+  }
+  .my-8 {
+    margin: 2rem 0;
+  }
+</style>
